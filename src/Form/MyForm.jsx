@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import data from './data'
-import Input from './Component/Input/Input'
-import Button from './Component/Button/Button'
+import Input from '../Component/Input/Input'
+import Button from '../Component/Button/Button'
 import './MyForm.css'
-import Label from './Component/Label/Label';
-import input from './Component/Input/Input';
+import Label from '../Component/Label/Label';
+import input from '../Component/Input/Input';
 
 
 const MyForm = () => {
