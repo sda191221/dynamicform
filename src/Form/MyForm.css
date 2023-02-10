@@ -1,0 +1,31 @@
+.main{
+display:flex;
+width: 100%;
+}
+.form{
+    margin-left: 20px;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+.buttonDiv{
+    margin-top: 10px;
+}
+.preview{
+    width: 30%;
+    margin-left: 60px;
+    padding: 5px;
+    margin-top: 70px;
+    padding-top: 10px;
+    padding-left :30px;
+    border: 1px solid #ccc;
+    vertical-align:middle;
+    height: 40%;
+}
+.previewCard{
+    display: flex;
+}
+.value{
+    padding: 5px;
+}

@@ -1,0 +1,46 @@
+.Input {
+    width: 50%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.Label {
+    font-size: 12px;
+    color: gray;
+}
+
+.InputElement {
+    padding: 5px;
+    margin: 10px 0px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+
+.InputElement:focus {
+    outline: none;
+    background-color: #ccc;
+}
+
+.Invalid {
+    border: 1px solid red;
+    background-color: #FDA49A;
+}
+.radio{
+    display: flex;
+    margin-left: 20px;
+    margin: 10px 0px;
+    
+}
+.hide{
+    
+    display:none;
+}
+.show{
+    display: block;
+    font-size: 12px;
+    padding: 3px;
+    color:red;
+}
+/* input:invalid[focused="true"] ~ span{
+    display: block;
+} */
