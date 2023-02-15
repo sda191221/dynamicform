@@ -37,7 +37,7 @@ const data = [
             },
             {
                 type: "max",
-                params: [10, "name cannot be more than 10 characters"],
+                params: [10, "Mobile no cannot be more than 10 characters"],
             },
         ],
     },
@@ -50,7 +50,7 @@ const data = [
         validations: [
             {
                 type: "required",
-                params: "email is required",
+                params: ["email is required"],
             },
             {
                 type: "isValid",

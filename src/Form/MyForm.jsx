@@ -1,79 +1,97 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import data from './data'
 import Input from '../Component/Input/Input'
 import Button from '../Component/Button/Button'
 import './MyForm.css'
 import Label from '../Component/Label/Label';
 import input from '../Component/Input/Input';
+import ErrorMessage from '../Component/ErrorMessage/ErrorMessage';
 
 
 const MyForm = () => {
     const [submitted, setSubmitted] = useState(false);
+    const [isReset, setIsReset] = useState(false);
 
-    const [values, setValues] = useState(
-        { 'Full Name': '', 'Mobile Number': '', 'Email': '', 'Gender': '', 'Country': '' }
-    );
-    const [errMsg, setErrMsg] = useState(
-        { 'Full Name': 'Full Name is required', 'Mobile Number': 'Mobile Number is required', 'Email': 'Email is required', 'Gender': 'Gender is required', 'Country': 'Country is required' }
-    );
-    //console.log(values);
+    const [values, setValues] = useState({});
+
+    const [errMsg, setErrMsg] = useState({});
+
 
     const inputChangedHandler = (event, formElement) => {
+
+
+        setValues((values) => ({
+            ...values,
+            [formElement.label]: event.target.value,
+        }));
+
         let newValue = formElement.label;
-        setValues({ ...values, [newValue]: event.target.value });
+        // setValues({ ...values, [newValue]: event.target.value });
+        //console.log(values);
         let msg = "";
         let regEx = (/\S+@\S+\.\S+/);
-        let length = values[formElement.label].length;
+        let length = event.target.value.length;
 
         //console.log(values);
         //console.log(formElement.validations);
         if (formElement.label === 'Country' || formElement.label === 'Gender') {
             msg = "";
+            setErrMsg({ ...errMsg, [newValue]: msg });
+
         }
         else {
+
             formElement.validations.map((validation) => {
-                if (validation.type === 'required') {
-                    if (values[formElement.label] === '') {
-                        msg = validation.params;
-                        //console.log(msg);
-                        //setErrMsg({ ...errMsg, [newValue]: msg });
+
+                if (event.target.value === '') {
+                    if (validation.type === 'required') {
+                        msg = validation.params[0];
+                        console.log(msg);
+                        setErrMsg({ ...errMsg, [newValue]: msg });
+                        // console.log(errMsg);
                     }
                 }
 
                 if (validation.type === 'min') {
-                    if (length < validation.params[0] - 1) {
+                    if (length < validation.params[0] && length > 0) {
                         msg = validation.params[1];
                         //console.log(msg);
-                        //setErrMsg({ ...errMsg, [newValue]: msg });
+                        setErrMsg({ ...errMsg, [newValue]: msg });
                     }
 
                 }
                 if (validation.type === 'max') {
-                    if (length > validation.params[0] - 1) {
+                    if (length > validation.params[0]) {
                         msg = validation.params[1];
                         //console.log(msg);
-                        //setErrMsg({ ...errMsg, [newValue]: msg });
+                        setErrMsg({ ...errMsg, [newValue]: msg });
                     }
 
                 }
 
-                if (validation.type === 'isValid') {
+                if (validation.type === 'isValid' && event.target.value != '') {
                     if (!(regEx.test(values[formElement.label]))) {
                         msg = validation.params;
                         //console.log(msg);
-                        //setErrMsg({ ...errMsg, [newValue]: msg });
+                        setErrMsg({ ...errMsg, [newValue]: msg });
                     }
                 }
 
-
             })
-
         }
-        setErrMsg({ ...errMsg, [formElement.label]: msg });
         //console.log(errMsg);
+        setErrMsg((errMsg) => ({
+            ...errMsg,
+            [formElement.label]: msg,
+        }));
+
+        console.log(errMsg);
     }
     const checkValidity = () => {
         let valid = true;
+        if (submitted) {
+            valid = false;
+        }
         data.map((element) => {
             if (errMsg[element.label] != "") {
                 valid = false;
@@ -87,12 +105,13 @@ const MyForm = () => {
         e.preventDefault();
         //console.log(checkValidity());
         setSubmitted(true);
-        setValues({ 'Full Name': '', 'Mobile Number': '', 'Email': '', 'Gender': '', 'Country': '' });
+        setValues({});
     }
-    const doReset = () => {
-        e.preventDefault();
-        setValues({ 'Full Name': '', 'Mobile Number': '', 'Email': '', 'Gender': '', 'Country': '' });
-        setFocus(false);
+    const doReset = (e) => {
+        //e.preventDefault();
+        setValues({});
+        setErrMsg({});
+        setIsReset(true);
     }
 
     let form =
@@ -107,15 +126,16 @@ const MyForm = () => {
                             //placeholder={formElement.placeholder}
                             //type={formElement.type}
                             element={formElement}
-                            value={values[formElement.label]}
-                            errorMessage={errMsg}
+                            value={(submitted) ? "" : values[formElement.label]}
+                            errorMessage={(submitted) ? "" : errMsg}
                             //validationType={formElement.validationType}
                             //validations={formElement.validations}
                             //touched={formElement.config.touched}
                             changed={(event) => inputChangedHandler(event, formElement)}
                             formSubmitted={submitted}
+                            isReset={isReset}
                         />
-                        {/* <ErrorMessage>{errMsg[formElement.label]}</ErrorMessage> */}
+
                     </div>
                 ))}
                 <div className='buttonDiv'>

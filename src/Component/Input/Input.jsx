@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 
 import classes from './Input.module.css';
 
 const input = (props) => {
     let inputElement = null;
+
     const inputClasses = [classes.InputElement];
     const [focused, setFocused] = useState(false);
 
-    let errorMsg = '';
-    const handleFocus = (e) => {
-        setFocused(true);
-    }
+    // let errorFocus = (props.value) ? "" : [props.element.label] + " is required";
+    // const handleFocus = (e) => {
+    //     setFocused(true);
+    // }
 
     switch (props.element.type) {
         case ('select'):
@@ -20,8 +22,8 @@ const input = (props) => {
                     className={inputClasses.join(' ')}
                     onChange={props.changed}
                     key={props.element.id}
-                    onBlur={handleFocus}
-                    focused={focused.toString()}
+                    // onBlur={handleFocus}
+                    // focused={focused.toString()}
                     value={props.value}>
                     <option>{props.element.placeholder}</option>
                     {props.element.options.map(option => (
@@ -44,8 +46,8 @@ const input = (props) => {
                             value={option.value}
                             name={props.element.label}
                             onChange={props.changed}
-                            onBlur={handleFocus}
-                            focused={focused.toString()}
+                            // onBlur={handleFocus}
+                            // focused={focused.toString()}
                             checked={props.value === option.value}
                         />
                         {option.label}
@@ -63,8 +65,9 @@ const input = (props) => {
                 className={inputClasses.join(' ')}
                 placeholder={props.element.placeholder}
                 onChange={props.changed}
-                onBlur={handleFocus}
-                focused={focused.toString()}
+                maxlength={(props.element.id === "name" || props.element.id === "mobileno") ? "12" : "30"}
+            // onBlur={handleFocus}
+            // focused={focused.toString()}
             />;
     }
 
@@ -72,7 +75,8 @@ const input = (props) => {
         <div className={classes.Input}>
             <label className={classes.Label} key={props.element.label}>{props.element.label}</label><br />
             <div>{inputElement}</div>
-            <span className={(focused ? classes.show : classes.hide)}>{props.errorMessage[props.element.label]}</span>
+            {props.errorMessage ? <ErrorMessage>{props.errorMessage[props.element.label]}</ErrorMessage> : <span></span>}
+            {/* {!props.formSubmitted || !props.isReset ? <span className={(focused ? classes.show : classes.hide)}> <ErrorMessage>{errorFocus}</ErrorMessage></span> : ""} */}
         </div>
     );
 
